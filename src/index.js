@@ -43,6 +43,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const p = document.createElement("p")
     p.textContent = `${toy.likes} likes`
     const button = document.createElement("button")
+    button.addEventListener("click", () => {
+      p.textContent = `${toy.likes += 1} Likes`
+      updateLikes(toy.id, toy.likes)
+    })
     button.classList.add("like-btn")
     button.setAttribute("id", `${toy.id}`)
     button.textContent = "Like ❤️"
@@ -54,6 +58,20 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderToys(toyList) {
     toyList.forEach(toy => {
       renderCard(toy)
+    })
+  }
+
+  function updateLikes(id, newNumberOfLikes) {
+    fetch(`http://localhost:3000/toys/${id}`, {
+      method: "PATCH",
+      headers:
+      {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        "likes": newNumberOfLikes
+      })
     })
   }
 
